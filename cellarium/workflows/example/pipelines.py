@@ -4,28 +4,25 @@ from cellarium.workflows.example import components
 
 
 @dsl.pipeline()
-def example_pipeline(component_1_config: str, component_2_config: str):
+def base_model_lr_pipeline(component_1_config: str = "gs://cellarium-file-system/ml-configs/Supervised_cell_classification/Base_model_regular_LR/Base_model_regular_lr.yaml"):
     """
-    KFP pipeline to run PCA train pipeline.
+    KFP pipeline to run tdigest train pipeline.
 
     """
     component_job_1 = kfp_helpers.create_job(
-        component_func=components.example_component_1,
-        display_name="Example Job 1",
+        component_func=components.base_model_lr_run,
+        display_name="base_model_lr_run",
+        replica_count=1,
+        machine_type="n1-highmem-16",
+        accelerator_type = "NVIDIA_TESLA_T4",
+        accelerator_count=2,
         config=component_1_config
     )
 
-    component_job_2 = kfp_helpers.create_job(
-        component_func=components.example_component_2,
-        display_name="Example Job 2",
-        config=component_2_config
-    )
 
     task_1 = component_job_1()
-    task_2 = component_job_2()
 
-    task_2.after(task_1)
 
 
 if __name__ == '__main__':
-    example_pipeline()
+    base_model_lr_pipeline()
