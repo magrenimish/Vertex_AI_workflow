@@ -4,7 +4,7 @@ from kfp.dsl import *
 from typing import *
 
 
-@dsl.component(base_image="us-central1-docker.pkg.dev/dsp-cell-annotation-service/cas-services-cicd/cas-pytorch-cuda-pipeline-dev:1.4.5-alpha.1", 
+@dsl.component(base_image="gcr.io/deeplearning-platform-release/pytorch-gpu.py310", 
                packages_to_install=[
                    "git+https://github.com/cellarium-ai/cellarium-ml",
                    "gcsfs",
