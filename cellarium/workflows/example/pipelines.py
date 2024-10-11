@@ -4,7 +4,7 @@ from cellarium.workflows.example import components
 
 
 @dsl.pipeline()
-def base_model_lr_pipeline_final(component_1_config: str = "gs://cellarium-file-system/ml-configs/Supervised_cell_classification/Base_model_regular_LR/Base_model_regular_lr.yaml"):
+def base_model_lr_pipeline_final(component_1_config: str = "gs://cellarium-file-system/ml-configs/Supervised_cell_classification/Base_model_regular_LR/Base_model_regular_lr_final.yaml"):
     """
     KFP pipeline to run tdigest train pipeline.
 
@@ -25,4 +25,4 @@ def base_model_lr_pipeline_final(component_1_config: str = "gs://cellarium-file-
 
 
 if __name__ == '__main__':
-    base_model_lr_pipeline()
+    base_model_lr_pipeline_final()

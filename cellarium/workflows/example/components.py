@@ -7,10 +7,10 @@ from typing import *
 @dsl.component(base_image="us-central1-docker.pkg.dev/dsp-cell-annotation-service/cas-services-cicd/cas-pytorch-cuda-pipeline-dev:1.4.5-alpha.1", 
                packages_to_install=[
                    "anndata==0.10.9",
-                   "git+https://github.com/cellarium-ai/cellarium-ml.git@lr_with_sequential_lr_scheduler",
+                   "git+https://github.com/cellarium-ai/cellarium-ml.git@lr_sequential_lr_ontology_cells",
                    "gcsfs",
                    ])
-def base_model_lr_run_final(config: str = "gs://cellarium-file-system/ml-configs/Supervised_cell_classification/Base_model_regular_LR/Base_model_regular_lr.yaml",
+def base_model_lr_run_final(config: str = "gs://cellarium-file-system/ml-configs/Supervised_cell_classification/Base_model_regular_LR/Base_model_regular_lr_final.yaml",
                 ):
     """
     Test Example component
