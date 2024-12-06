@@ -10,7 +10,7 @@ from typing import *
                    "git+https://github.com/cellarium-ai/cellarium-ml.git@logistic_regression_variation_5",
                    "gcsfs",
                    ])
-def model_5_lrexp_human_alpha_zero_final(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_train/Model_variation_5/model_5_alpha_one_config.yaml",
+def model_5_lrexp_human_alpha_zero_no_normalization_final(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_train/Model_variation_5/model_5_alpha_one_config.yaml",
                 ):
     """
     Test Example component
