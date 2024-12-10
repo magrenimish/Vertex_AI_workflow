@@ -10,7 +10,7 @@ from typing import *
                    "git+https://github.com/cellarium-ai/cellarium-ml.git@logistic_regression_variation_5",
                    "gcsfs",
                    ])
-def model_5_lrexp_human_alpha_zero_no_normalization_final(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_train/Model_variation_5/model_5_alpha_one_config.yaml",
+def base_model_no_pp_hop_score_calculation(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Base_model_regular_lr_no_pp/Base_model_no_pp_prediction_config.yaml",
                 ):
     """
     Test Example component
@@ -19,6 +19,6 @@ def model_5_lrexp_human_alpha_zero_no_normalization_final(config: str = "gs://ce
     from cellarium.ml.cli import main as cellarium_ml_cli
     #os.environ["NODE_RANK"] = os.environ.get("RANK")
 
-    cellarium_ml_cli(args=["custom_logistic_regression", "fit", "--config", config])
+    cellarium_ml_cli(args=["custom_logistic_regression", "predict", "--config", config])
     
     print("LR Training is being executed....")
