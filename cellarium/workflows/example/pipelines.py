@@ -4,13 +4,13 @@ from cellarium.workflows.example import components
 
 
 @dsl.pipeline()
-def Model_variation_5_alpha_zero_no_normalization_hop_score_calculation(component_1_config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Model_5_alpha_zero_no_normalization/model_5_alpha_zero_no_normalization_prediction_config.yaml"):
+def Model_variation_5_alpha_half_normalized_hop_score_calculation(component_1_config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Model_5_alpha_half_normalized/model_5_alpha_half_normalization_prediction_config.yaml"):
     """
     KFP pipeline to run tdigest train pipeline.
 
     """
     component_job_1 = kfp_helpers.create_job(
-        component_func=components.model_variation_5_alpha_zero_no_normalization_hop_score_calculation,
+        component_func=components.model_variation_5_alpha_half_normalized_hop_score_calculation,
         display_name="model_variation_5_alpha_zero_no_normalization_hop_score_calculation",
         replica_count=1,
         machine_type="n1-highmem-32",
@@ -25,4 +25,4 @@ def Model_variation_5_alpha_zero_no_normalization_hop_score_calculation(componen
 
 
 if __name__ == '__main__':
-    Model_variation_5_alpha_zero_no_normalization_hop_score_calculation()
+    Model_variation_5_alpha_half_normalized_hop_score_calculation()
