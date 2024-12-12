@@ -11,7 +11,7 @@ def Model_variation_5_alpha_half_normalized_hop_score_calculation(component_1_co
     """
     component_job_1 = kfp_helpers.create_job(
         component_func=components.model_variation_5_alpha_half_normalized_hop_score_calculation,
-        display_name="model_variation_5_alpha_zero_no_normalization_hop_score_calculation",
+        display_name="model_variation_5_alpha_half_normalized_hop_score_calculation",
         replica_count=1,
         machine_type="n1-highmem-32",
         accelerator_type = "NVIDIA_TESLA_T4",
