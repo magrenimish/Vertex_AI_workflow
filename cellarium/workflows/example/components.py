@@ -10,7 +10,7 @@ from typing import *
                    "git+https://github.com/cellarium-ai/cellarium-ml.git@logistic_regression_variation_5",
                    "gcsfs",
                    ])
-def base_model_pp_hop_score_calculation_trial_1(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Base_model_regular_lr_pp/Base_model_pp_prediction_config.yaml",
+def base_model_no_pp_hop_score_calculation(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Base_model_regular_lr_no_pp/Base_model_no_pp_prediction_config.yaml",
                 ):
     """
     Test Example component
