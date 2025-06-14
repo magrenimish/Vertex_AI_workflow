@@ -1,24 +1,25 @@
+import subprocess
 import kfp
 from kfp import dsl
 from kfp.dsl import *
 from typing import *
 
 
-@dsl.component(base_image="us-central1-docker.pkg.dev/dsp-cell-annotation-service/cas-services-cicd/cas-pytorch-cuda-pipeline-dev:1.4.5-alpha.1", 
-               packages_to_install=[
-                   "anndata==0.10.9",
-                   "git+https://github.com/cellarium-ai/cellarium-ml.git@logistic_regression_variation_5",
-                   "gcsfs",
-                   ])
-def base_model_670_targets_no_pp_65(config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Base_model_670_targets_no_pp/Base_model_670_targets_no_pp_65.yaml",
+
+@dsl.component(base_image="docker.io/nimishmagre1996/viscy-py311-cuda12:latest")
+def viscy_train(config: str = "gs://cellarium-file-system/curriculum/viscy/configs/viscy_train_config.yaml",
                 ):
     """
     Test Example component
     """
-    #import os
-    from cellarium.ml.cli import main as cellarium_ml_cli
-    #os.environ["NODE_RANK"] = os.environ.get("RANK")
+    """
+    Vertex AI component to run viscy CLI via subprocess call.
+    """
+    # Construct the CLI command
+    import subprocess
+    cmd = ["viscy", "fit", "--c", config]
 
-    cellarium_ml_cli(args=["custom_logistic_regression", "predict", "--config", config])
+    # Run the command
+    subprocess.run(cmd, check=True)
     
     print("LR Training is being executed....")

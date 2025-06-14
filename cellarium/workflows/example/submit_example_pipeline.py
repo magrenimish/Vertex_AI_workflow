@@ -9,9 +9,9 @@ from cellarium.workflows import kfp_helpers
 @click.option("--location")
 @click.option("--display_name")
 @click.option("--component_1_config")
-def submit_example(project_id: str = "dsp-cell-annotation-service", location: str = "us-central1", display_name: str = "base_model_670_targets_no_pp_65_trial_1", component_1_config: str = "gs://cellarium-file-system/ml-configs/lrexp_human_validation/Base_model_670_targets_no_pp/Base_model_670_targets_no_pp_65.yaml"):
+def submit_example(project_id: str = "dsp-cell-annotation-service", location: str = "us-central1", display_name: str = "viscy_train_trial_1", component_1_config: str = "gs://cellarium-file-system/curriculum/viscy/configs/viscy_train_config.yaml"):
     kfp_helpers.submit_pipeline(
-        pipeline_func=pipelines.base_model_670_targets_no_pp_65_trial_1,
+        pipeline_func=pipelines.viscy_train_trial_1,
         project_id=project_id,
         location=location,
         pipeline_display_name=display_name,
