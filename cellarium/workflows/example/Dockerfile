@@ -45,8 +45,10 @@ RUN pip install \
     "viscy" \
     "viscy[metrics]" \
     "viscy[visual]" \
-    gcsfs \
-    ome-zarr
+    "gcsfs" \
+    "ome-zarr" \
+    "six" \
+    "pyparsing"
 
 
 # Install CUDA dependencies
