@@ -1,0 +1,123 @@
+# lightning.pytorch==2.0.1
+seed_everything: true
+trainer:
+  accelerator: gpu
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: 16-mixed
+  logger:
+    class_path: lightning.pytorch.loggers.TensorBoardLogger
+    # Nesting the logger config like this is equivalent to
+    # supplying the following argument to `lightning.pytorch.Trainer`:
+    # logger=TensorBoardLogger(
+    #     "/hpc/projects/intracellular_dashboard/viral-sensor/infection_classification/models/contrastive_tune_augmentations",
+    #     log_graph=True,
+    #     version="vanilla",
+    # )
+    init_args:
+      save_dir: gs://viscy
+      name: phase2fluor
+      log_graph: True
+      # The logs will be saved in `save_dir/lightning_logs/version`
+  callbacks: null
+  fast_dev_run: false
+  max_epochs: 80
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 5
+  enable_checkpointing: null
+  inference_mode: true
+  use_distributed_sampler: true
+  plugins: null
+  sync_batchnorm: false
+  default_root_dir: null
+model:
+  class_path: viscy.translation.engine.VSUNet
+  init_args:
+    architecture: UNeXt2_2D
+    model_config: 
+      in_channels: 1
+      out_channels: 2
+      encoder_blocks: [3, 3, 9, 3]
+      dims: [96, 192, 384, 768]
+      decoder_conv_blocks: 2
+      stem_kernel_size: [1, 2, 2]
+      in_stack_depth: 1
+      pretraining: false
+    loss_function:
+      class_path: viscy.translation.engine.MixedLoss
+      init_args:
+        l1_alpha: 0.5
+        l2_alpha: 0.0
+        ms_dssim_alpha: 0.5
+    lr: 6e-4
+    schedule: WarmupCosine
+    ckpt_path: null
+    log_batches_per_epoch: 5
+    log_samples_per_batch: 1
+data:
+  class_path: viscy.data.hcs.HCSDataModule
+  init_args:
+    data_path: gs://viscy/training/a549_hoechst_cellmask_train_val.zarr
+    source_channel: Phase3D
+    target_channel:
+      - Nucl
+      - Mem
+    z_window_size: 1
+    split_ratio: 0.8
+    batch_size: 16
+    num_workers: 8
+    yx_patch_size: [256, 256]
+    normalizations:
+      - class_path: viscy.transforms.NormalizeSampled
+        init_args:
+          keys: ["Phase3D"]
+          level: "fov_statistics"
+          subtrahend: "mean"
+          divisor: "std"
+      - class_path: viscy.transforms.NormalizeSampled
+        init_args:
+          keys: [Nucl,Mem]
+          level: "fov_statistics"
+          subtrahend: "median"
+          divisor: "iqr"
+    augmentations:
+      - class_path: viscy.transforms.RandWeightedCropd
+        init_args:
+          keys: ["Phase3D","Nucl", "Mem"]
+          w_key: "Nucl"
+          spatial_size: [1, 384, 384]
+          num_samples: 2
+      - class_path: viscy.transforms.RandAffined
+        init_args:
+          keys: ["Phase3D","Nucl", "Mem"]
+          prob: 0.8
+          rotate_range: [3.14, 0.0, 0.0]
+          shear_range: [0.0, 0.01, 0.01]
+          scale_range: [0.2, 0.3, 0.3]
+          padding_mode: "zeros"
+      - class_path: viscy.transforms.RandAdjustContrastd
+        init_args:
+          keys: "Phase3D"
+          prob: 0.5
+          gamma: [0.8, 1.2]
+      - class_path: viscy.transforms.RandScaleIntensityd
+        init_args:
+          keys: "Phase3D"
+          prob: 0.5
+          factors: 0.5
+      - class_path: viscy.transforms.RandGaussianNoised
+        init_args:
+          keys: "Phase3D"
+          prob: 0.5
+          mean: 0.0
+          std: 0.3
+      - class_path: viscy.transforms.RandGaussianSmoothd
+        init_args:
+          keys: "Phase3D"
+          prob: 0.5
+          sigma_z: [0,0]
+          sigma_y: [0.25, 0.75]
+          sigma_x: [0.25, 0.75]
+    caching: false
